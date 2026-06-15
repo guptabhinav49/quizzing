@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For MJ 🌸</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:            #FFF5EE;
+      --card:          #FFFFFF;
+      --primary:       #E8627A;
+      --primary-light: #F9C9D4;
+      --primary-dark:  #C94965;
+      --text:          #3D2B1F;
+      --text-muted:    #9B7E72;
+      --border:        #F0DDD5;
+      --correct:       #6DBF91;
+      --shadow:        0 8px 40px rgba(232,98,122,.12), 0 2px 12px rgba(0,0,0,.06);
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem 1rem;
+    }
+
+    /* ── Shared app wrapper ── */
+    .app {
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    /* ── Header ── */
+    .header { text-align: center; }
+
+    .header-emoji {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 0.3rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .header-text {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-5px); }
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--card);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 2rem 2rem 2.25rem;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-light), var(--primary), var(--primary-light));
+      background-size: 200% 100%;
+      animation: shimmer 3s linear infinite;
+    }
+
+    @keyframes shimmer {
+      0%   { background-position: 100% 0; }
+      100% { background-position: -100% 0; }
+    }
+
+    /* ── Landing page ── */
+    .landing-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 6vw, 2.1rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 0.3rem;
+    }
+
+    .landing-for {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--primary);
+      margin-bottom: 1.75rem;
+    }
+
+    .rules-heading {
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 0.8rem;
+    }
+
+    .rules-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      margin-bottom: 1.85rem;
+    }
+
+    .rules-list li {
+      font-size: 0.88rem;
+      line-height: 1.65;
+      color: var(--text);
+      padding-left: 1.6rem;
+      position: relative;
+    }
+
+    .rules-list li::before {
+      content: '✦';
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-size: 0.6rem;
+      top: 0.3em;
+    }
+
+    /* ── Progress ── */
+    .progress-wrap { margin-bottom: 1.5rem; }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.55rem;
+    }
+
+    .progress-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+    }
+
+    .progress-count {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .progress-bar-bg {
+      height: 5px;
+      background: var(--primary-light);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-light), var(--primary));
+      border-radius: 99px;
+      transition: width 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0%;
+    }
+
+    /* ── Question ── */
+    .question-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(0.9rem, 2.8vw, 1.05rem);
+      font-weight: 400;
+      line-height: 1.8;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+    }
+
+    .question-text b,
+    .question-text strong {
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    .question-text em,
+    .question-text i {
+      font-style: italic;
+      color: var(--text-muted);
+    }
+
+    .question-text mark {
+      background-color: var(--primary-light);
+      border-radius: 3px;
+      padding: 0.05em 0.3em;
+      font-style: normal;
+    }
+
+    .question-text u {
+      text-decoration: underline;
+      text-decoration-color: var(--primary);
+      text-underline-offset: 3px;
+    }
+
+    /* ── Input ── */
+    .answer-input {
+      width: 100%;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 0.85rem 1.1rem;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text);
+      background: #FDFAF8;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      margin-bottom: 1.1rem;
+    }
+
+    .answer-input::placeholder { color: #C9B5AD; }
+
+    .answer-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(232,98,122,.1);
+    }
+
+    .answer-input.is-correct {
+      border-color: var(--correct);
+      box-shadow: 0 0 0 4px rgba(109,191,145,.12);
+    }
+
+    /* ── Shared button ── */
+    .next-btn {
+      width: 100%;
+      padding: 0.9rem 1.5rem;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
+      box-shadow: 0 4px 18px rgba(232,98,122,.38);
+    }
+
+    .next-btn:not(:disabled):hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 26px rgba(232,98,122,.44);
+    }
+
+    .next-btn:not(:disabled):active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(232,98,122,.3);
+    }
+
+    .next-btn:disabled {
+      opacity: 0.32;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* ── Card transitions ── */
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(50px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideOutLeft {
+      from { opacity: 1; transform: translateX(0); }
+      to   { opacity: 0; transform: translateX(-50px); }
+    }
+
+    @keyframes fadeOutUp {
+      from { opacity: 1; transform: translateY(0) scale(1); }
+      to   { opacity: 0; transform: translateY(-12px) scale(0.97); }
+    }
+
+    .card.is-entering {
+      animation: slideInRight 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    }
+
+    .card.is-exiting {
+      animation: slideOutLeft 0.3s cubic-bezier(0.55, 0, 1, 0.45) both;
+      pointer-events: none;
+    }
+
+    .card.is-leaving {
+      animation: fadeOutUp 0.3s ease-out both;
+      pointer-events: none;
+    }
+
+    /* ── Utility ── */
+    .hidden { display: none !important; }
+
+    /* ── Birthday screen — scrollable ── */
+    .birthday-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(145deg, #FFB7C5 0%, #FFCBA4 48%, #FFE9B8 100%);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      z-index: 100;
+    }
+
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 101;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Inner wrapper: centers short content, lets long content scroll */
+    .birthday-inner {
+      min-height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem;
+    }
+
+    .birthday-content {
+      position: relative;
+      z-index: 102;
+      text-align: center;
+      max-width: 560px;
+      width: 100%;
+    }
+
+    @keyframes popIn {
+      0%   { opacity: 0; transform: scale(0.4) rotate(-15deg); }
+      65%  { transform: scale(1.18) rotate(6deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      14%       { transform: scale(1.18); }
+      28%       { transform: scale(1); }
+      42%       { transform: scale(1.1); }
+    }
+
+    .birthday-emoji {
+      font-size: clamp(4rem, 14vw, 5.5rem);
+      display: block;
+      margin-bottom: 0.5rem;
+      animation: popIn 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .birthday-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 9vw, 3.5rem);
+      font-weight: 700;
+      color: #4A1C2A;
+      line-height: 1.2;
+      margin-bottom: 0.4rem;
+      animation: fadeUp 0.6s 0.35s ease-out both;
+    }
+
+    .birthday-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.3rem, 5.5vw, 2rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--primary);
+      margin-bottom: 1.75rem;
+      animation: fadeUp 0.6s 0.55s ease-out both;
+    }
+
+    .birthday-message {
+      font-size: clamp(0.9rem, 2.8vw, 1rem);
+      font-weight: 400;
+      color: #6A3040;
+      line-height: 1.9;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.6s 0.75s ease-out both;
+      text-align: left;
+    }
+
+    /* If the user wraps paragraphs in <p> tags inside BIRTHDAY_MESSAGE */
+    .birthday-message p + p {
+      margin-top: 1em;
+    }
+
+    .birthday-hearts {
+      font-size: clamp(1.4rem, 5vw, 1.8rem);
+      letter-spacing: 0.5rem;
+      display: block;
+      animation: fadeUp 0.6s 0.95s ease-out both, heartbeat 1.8s 1.6s ease-in-out infinite;
+    }
+
+    /* ── Setup panel ── */
+    .setup-panel {
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .setup-card {
+      background: var(--card);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .setup-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #B0C4DE, #5B8FC9, #B0C4DE);
+      background-size: 200% 100%;
+      animation: shimmer 3s linear infinite;
+    }
+
+    .setup-header {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .setup-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .setup-badge {
+      font-size: 0.62rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: #E3EEFF;
+      color: #3A6AB0;
+      border-radius: 6px;
+      padding: 0.22em 0.55em;
+    }
+
+    .setup-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 1.4rem;
+    }
+
+    .setup-field-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--primary);
+      margin-bottom: 0.4rem;
+    }
+
+    .setup-input {
+      width: 100%;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 0.85rem 1.1rem;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      color: var(--text);
+      background: #FDFAF8;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      margin-bottom: 1.1rem;
+    }
+
+    .setup-input:focus {
+      border-color: #5B8FC9;
+      box-shadow: 0 0 0 4px rgba(91,143,201,.12);
+    }
+
+    .setup-hash-row {
+      display: flex;
+      gap: 0.6rem;
+      align-items: stretch;
+      margin-bottom: 1.25rem;
+    }
+
+    .setup-hash-box {
+      flex: 1;
+      background: #F5F5F5;
+      border: 1.5px solid #E0E0E0;
+      border-radius: 10px;
+      padding: 0.7rem 0.9rem;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.72rem;
+      color: #444;
+      word-break: break-all;
+      line-height: 1.55;
+      user-select: all;
+      cursor: text;
+    }
+
+    .setup-copy-btn {
+      flex-shrink: 0;
+      padding: 0 1.1rem;
+      border: none;
+      border-radius: 10px;
+      background: #5B8FC9;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.1s;
+      white-space: nowrap;
+    }
+
+    .setup-copy-btn:hover  { background: #3A6AB0; }
+    .setup-copy-btn:active { transform: scale(0.95); }
+
+    .setup-hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      padding: 0.85rem 1rem;
+      background: #FAFAF0;
+      border-radius: 10px;
+      border-left: 3px solid #D4C070;
+    }
+
+    .setup-hint code {
+      background: #EEEDE0;
+      border-radius: 4px;
+      padding: 0.1em 0.35em;
+      font-family: 'Courier New', monospace;
+      font-size: 0.78rem;
+      color: #4A3A10;
+    }
+
+    /* ── Floating help button ── */
+    .help-btn {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 150;
+      width: 2.25rem;
+      height: 2.25rem;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow: 0 2px 14px rgba(0,0,0,0.13);
+      color: var(--text-muted);
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, color 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+
+    .help-btn:hover {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      transform: scale(1.1);
+      box-shadow: 0 4px 18px rgba(232,98,122,.25);
+    }
+
+    /* ── Modal (bottom sheet) ── */
+    @keyframes sheetIn  { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    @keyframes sheetOut { from { transform: translateY(0); }    to { transform: translateY(100%); } }
+    @keyframes backdropIn  { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes backdropOut { from { opacity: 1; } to { opacity: 0; } }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(61,43,31,.35);
+      z-index: 200;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      animation: backdropIn 0.22s ease-out both;
+    }
+
+    .modal-backdrop.is-closing {
+      animation: backdropOut 0.2s ease-in both;
+      pointer-events: none;
+    }
+
+    .modal-card {
+      background: var(--card);
+      border-radius: 24px 24px 0 0;
+      box-shadow: 0 -8px 40px rgba(0,0,0,0.14);
+      padding: 1.5rem 2rem 2rem;
+      width: 100%;
+      max-width: 560px;
+      position: relative;
+      overflow: hidden;
+      animation: sheetIn 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .modal-backdrop.is-closing .modal-card {
+      animation: sheetOut 0.22s ease-in both;
+    }
+
+    .sheet-handle {
+      width: 40px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin: 0 auto 1.25rem;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .modal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .modal-close {
+      width: 2rem;
+      height: 2rem;
+      border: none;
+      border-radius: 50%;
+      background: #F5EFEB;
+      color: var(--text-muted);
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, color 0.15s;
+      flex-shrink: 0;
+    }
+
+    .modal-close:hover {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════ LANDING VIEW ══════════════ -->
+  <div id="landing-view" class="app">
+    <div class="header">
+      <span class="header-emoji">🌸</span>
+      <span class="header-text">A little something for you&hellip;</span>
+    </div>
+
+    <div class="card" id="landing-card">
+      <h1 class="landing-title">Quiz time</h1>
+      <p class="landing-for" id="landing-for"></p>
+
+      <button class="next-btn" id="start-btn">
+        Let&rsquo;s Begin
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════ QUIZ VIEW ══════════════ -->
+  <div id="quiz-view" class="app hidden">
+    <div class="header">
+      <span class="header-emoji">🌸</span>
+      <span class="header-text">A little something for you&hellip;</span>
+    </div>
+
+    <div class="card" id="quiz-card">
+      <div class="progress-wrap">
+        <div class="progress-meta">
+          <span class="progress-label">Question <span id="q-current">1</span></span>
+          <span class="progress-count">of <span id="q-total"></span></span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+      </div>
+
+      <p class="question-text" id="question-text"></p>
+
+      <input
+        type="text"
+        class="answer-input"
+        id="answer-input"
+        placeholder="Type your answer…"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
+      />
+
+      <button class="next-btn" id="next-btn" disabled>
+        Next
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════ BIRTHDAY VIEW ══════════════ -->
+  <div id="birthday-view" class="birthday-screen hidden">
+    <canvas id="confetti-canvas"></canvas>
+    <div class="birthday-inner">
+      <div class="birthday-content">
+        <span class="birthday-emoji">🎂</span>
+        <h1 class="birthday-title">Happy Birthday!</h1>
+        <p class="birthday-name" id="birthday-name"></p>
+        <div class="birthday-message" id="birthday-message"></div>
+        <span class="birthday-hearts">💖 💕 💗</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ SETUP VIEW (index.html?setup) ══════════════ -->
+  <div id="setup-view" class="setup-panel hidden">
+    <div class="setup-card">
+      <div class="setup-header">
+        <h2>Hash Generator</h2>
+        <span class="setup-badge">Setup Mode</span>
+      </div>
+      <p class="setup-desc">
+        Type each answer below to get its SHA-256 hash.<br>
+        Paste the result into the <code>h</code> field of the matching question.
+      </p>
+
+      <div class="setup-field-label">Answer</div>
+      <input
+        type="text"
+        class="setup-input"
+        id="setup-input"
+        placeholder="Type an answer…"
+        autocomplete="off"
+        spellcheck="false"
+      />
+
+      <div class="setup-field-label">Hash</div>
+      <div class="setup-hash-row">
+        <div class="setup-hash-box" id="setup-hash">—</div>
+        <button class="setup-copy-btn" id="setup-copy">Copy</button>
+      </div>
+
+      <p class="setup-hint">
+        Hashes are computed from the <strong>lowercase, trimmed</strong> version of your answer,
+        so <code>"Michael Jackson"</code> and <code>"michael jackson"</code>
+        produce the same hash.<br><br>
+        When done, remove <code>?setup</code> from the URL to enter quiz mode.
+      </p>
+    </div>
+  </div>
+
+  <!-- ══════════════ FLOATING HELP BUTTON ══════════════ -->
+  <button class="help-btn" id="help-btn" aria-label="How it works">?</button>
+
+  <!-- ══════════════ HOW IT WORKS MODAL ══════════════ -->
+  <div id="how-it-works-modal" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <div class="sheet-handle"></div>
+      <div class="modal-header">
+        <h2 class="modal-title">How it works</h2>
+        <button class="modal-close" id="modal-close-btn" aria-label="Close">✕</button>
+      </div>
+      <ul class="rules-list">
+        <li>You&rsquo;ll get <span id="q-count"></span> quiz-style questions, one at a time.</li>
+        <li>These are a little elaborate because you&rsquo;re too smart for easy puzzles.</li>
+        <li>Use of Google/Wikipedia is expected 🤓. LLMs are a no-no 🏃!</li>
+        <li>Spelling counts — but capitalisation doesn&rsquo;t.</li>
+        <li>The Next button unlocks once you&rsquo;ve got it right.</li>
+        <li>Can you guess the connection between all the answers? 🤔</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // ================================================================
+    //  BIRTHDAY PERSON'S NAME — shown on the celebration screen
+    // ================================================================
+    const BIRTHDAY_NAME = "MJ";
+
+    // ================================================================
+    //  BIRTHDAY MESSAGE — the paragraph(s) shown after "Happy Birthday!"
+    //  Supports HTML: use <b>, <em>, <br>, or wrap in <p>…</p> tags.
+    // ================================================================
+    const BIRTHDAY_MESSAGE = "hehe";
+
+    // ================================================================
+    //  QUESTIONS ARRAY
+    //
+    //  q : question text (HTML supported — <b>, <em>, <mark>, <u>)
+    //  h : SHA-256 hash of the answer (lowercase, trimmed)
+    //      Open  index.html?setup  to generate hashes.
+    // ================================================================
+    const questions = [
+        { q: "sample", h: "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824" },
+    ];
+    // ================================================================
+
+    // SHA-256 via Web Crypto
+    async function hashAnswer(text) {
+      const data = new TextEncoder().encode(text.trim().toLowerCase());
+      const buf  = await crypto.subtle.digest('SHA-256', data);
+      return Array.from(new Uint8Array(buf))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+    }
+
+    // ── Route ────────────────────────────────────────────────────────
+    const params  = new URLSearchParams(window.location.search);
+    const isSetup = params.has('setup') || window.location.hash === '#setup';
+    const isReset = params.has('reset');
+
+    if (isReset) {
+      try { localStorage.removeItem('bday_quiz_state'); } catch {}
+      window.location.replace(window.location.pathname);
+    } else if (isSetup) {
+
+      document.getElementById('landing-view').classList.add('hidden');
+      document.getElementById('setup-view').classList.remove('hidden');
+
+      const setupInput = document.getElementById('setup-input');
+      const setupHash  = document.getElementById('setup-hash');
+      const setupCopy  = document.getElementById('setup-copy');
+
+      setupInput.focus();
+
+      setupInput.addEventListener('input', async () => {
+        const val = setupInput.value.trim();
+        setupHash.textContent = val ? await hashAnswer(val) : '—';
+      });
+
+      setupCopy.addEventListener('click', async () => {
+        const hash = setupHash.textContent;
+        if (hash === '—') return;
+        try {
+          await navigator.clipboard.writeText(hash);
+        } catch {
+          const range = document.createRange();
+          range.selectNodeContents(setupHash);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+        }
+        setupCopy.textContent = '✓ Copied';
+        setTimeout(() => { setupCopy.textContent = 'Copy'; }, 1600);
+      });
+
+    } else {
+
+      // ── Populate landing page ─────────────────────────────────────
+      document.getElementById('landing-for').textContent = `for ${BIRTHDAY_NAME} ✨`;
+      document.getElementById('q-count').textContent = questions.length;
+
+      // ── Quiz state ────────────────────────────────────────────────
+      let currentIndex = 0;
+      let isAnimating  = false;
+      let checkGen     = 0;
+
+      const landingView   = document.getElementById('landing-view');
+      const landingCard   = document.getElementById('landing-card');
+      const quizView      = document.getElementById('quiz-view');
+      const birthdayView  = document.getElementById('birthday-view');
+      const card          = document.getElementById('quiz-card');
+      const questionEl    = document.getElementById('question-text');
+      const inputEl       = document.getElementById('answer-input');
+      const nextBtn       = document.getElementById('next-btn');
+      const qCurrentEl    = document.getElementById('q-current');
+      const qTotalEl      = document.getElementById('q-total');
+      const progressFill  = document.getElementById('progress-fill');
+      const birthdayNameEl    = document.getElementById('birthday-name');
+      const birthdayMessageEl = document.getElementById('birthday-message');
+
+      qTotalEl.textContent = questions.length;
+
+      // ── Persistence ───────────────────────────────────────────────
+      const STATE_KEY = 'bday_quiz_state';
+
+      function saveState(index, complete = false) {
+        try { localStorage.setItem(STATE_KEY, JSON.stringify({ index, complete })); } catch {}
+      }
+
+      function loadState() {
+        try { return JSON.parse(localStorage.getItem(STATE_KEY)); } catch { return null; }
+      }
+
+      function render() {
+        questionEl.innerHTML = questions[currentIndex].q;
+        inputEl.value = '';
+        inputEl.classList.remove('is-correct');
+        nextBtn.disabled = true;
+        qCurrentEl.textContent = currentIndex + 1;
+        progressFill.style.width = (currentIndex / questions.length * 100) + '%';
+        inputEl.focus();
+      }
+
+      // Landing → Quiz transition
+      document.getElementById('start-btn').addEventListener('click', () => {
+        if (isAnimating) return;
+        isAnimating = true;
+        saveState(0);
+
+        landingCard.classList.add('is-leaving');
+        landingCard.addEventListener('animationend', () => {
+          landingView.classList.add('hidden');
+          quizView.classList.remove('hidden');
+          render();
+          card.classList.add('is-entering');
+          card.addEventListener('animationend', () => {
+            card.classList.remove('is-entering');
+            isAnimating = false;
+          }, { once: true });
+        }, { once: true });
+      });
+
+      // Answer checking
+      inputEl.addEventListener('input', async () => {
+        const gen   = ++checkGen;
+        const typed = inputEl.value.trim();
+
+        if (!typed) {
+          nextBtn.disabled = true;
+          inputEl.classList.remove('is-correct');
+          return;
+        }
+
+        const hashed = await hashAnswer(typed);
+        if (gen !== checkGen) return;
+
+        const right = hashed === questions[currentIndex].h;
+        nextBtn.disabled = !right;
+        inputEl.classList.toggle('is-correct', right);
+      });
+
+      // Question advancement
+      function advance() {
+        if (nextBtn.disabled || isAnimating) return;
+        isAnimating = true;
+
+        card.classList.add('is-exiting');
+        card.addEventListener('animationend', () => {
+          card.classList.remove('is-exiting');
+          currentIndex++;
+
+          if (currentIndex >= questions.length) {
+            showBirthday();
+            isAnimating = false;
+            return;
+          }
+
+          saveState(currentIndex);
+          render();
+          card.classList.add('is-entering');
+          card.addEventListener('animationend', () => {
+            card.classList.remove('is-entering');
+            isAnimating = false;
+          }, { once: true });
+        }, { once: true });
+      }
+
+      function showBirthday() {
+        saveState(currentIndex, true);
+        birthdayNameEl.textContent   = BIRTHDAY_NAME;
+        birthdayMessageEl.innerHTML  = BIRTHDAY_MESSAGE;
+        quizView.classList.add('hidden');
+        birthdayView.classList.remove('hidden');
+        launchConfetti();
+      }
+
+      nextBtn.addEventListener('click', advance);
+      inputEl.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') advance();
+      });
+
+      // ── How it works modal ─────────────────────────────────────────
+      const modal = document.getElementById('how-it-works-modal');
+
+      function openModal() {
+        modal.classList.remove('hidden', 'is-closing');
+      }
+
+      function closeModal() {
+        modal.classList.add('is-closing');
+        setTimeout(() => {
+          modal.classList.add('hidden');
+          modal.classList.remove('is-closing');
+        }, 200);
+      }
+
+      document.getElementById('help-btn').addEventListener('click', () => {
+        modal.classList.contains('hidden') ? openModal() : closeModal();
+      });
+      document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      // ── Restore saved state on page load ───────────────────────────
+      const saved = loadState();
+      if (saved) {
+        if (saved.complete) {
+          landingView.classList.add('hidden');
+          showBirthday();
+        } else if (typeof saved.index === 'number' && saved.index < questions.length) {
+          currentIndex = saved.index;
+          landingView.classList.add('hidden');
+          quizView.classList.remove('hidden');
+          render();
+        }
+      } else {
+        openModal(); // auto-show rules on first visit
+      }
+    }
+
+    // ── Confetti engine ──────────────────────────────────────────────
+    function launchConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx    = canvas.getContext('2d');
+
+      const resize = () => {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+      };
+      resize();
+      window.addEventListener('resize', resize);
+
+      const COLORS = [
+        '#E8627A', '#F9C9D4', '#FFD166', '#FF85A1',
+        '#FFEAA0', '#A8E6CF', '#DDA0DD', '#FFB347', '#B5EAD7',
+      ];
+
+      const particles = Array.from({ length: 160 }, () => ({
+        x:        Math.random() * window.innerWidth,
+        y:        Math.random() * window.innerHeight - window.innerHeight * 1.1,
+        w:        Math.random() * 11 + 5,
+        h:        Math.random() * 5  + 3,
+        color:    COLORS[Math.floor(Math.random() * COLORS.length)],
+        vx:       (Math.random() - 0.5) * 2.2,
+        vy:       Math.random() * 2.8 + 1.4,
+        rotation: Math.random() * 360,
+        rotSpeed: (Math.random() - 0.5) * 4.5,
+        isCircle: Math.random() > 0.7,
+      }));
+
+      let startTime = null;
+      const DURATION = 7200;
+
+      function frame(ts) {
+        if (!startTime) startTime = ts;
+        const elapsed = ts - startTime;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const fadeStart = DURATION * 0.62;
+        const alpha = elapsed > fadeStart
+          ? Math.max(0, 1 - (elapsed - fadeStart) / (DURATION - fadeStart))
+          : 1;
+
+        for (const p of particles) {
+          p.x  += p.vx;
+          p.y  += p.vy;
+          p.vy += 0.045;
+          p.rotation += p.rotSpeed;
+
+          if (p.y > canvas.height + 20) {
+            p.y  = -20;
+            p.x  = Math.random() * canvas.width;
+            p.vy = Math.random() * 2.8 + 1.4;
+          }
+
+          ctx.save();
+          ctx.globalAlpha = alpha;
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rotation * Math.PI) / 180);
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          if (p.isCircle) {
+            ctx.arc(0, 0, p.h, 0, Math.PI * 2);
+          } else {
+            ctx.rect(-p.w / 2, -p.h / 2, p.w, p.h);
+          }
+          ctx.fill();
+          ctx.restore();
+        }
+
+        if (elapsed < DURATION) {
+          requestAnimationFrame(frame);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+
+      requestAnimationFrame(frame);
+    }
+  </script>
+</body>
+</html>

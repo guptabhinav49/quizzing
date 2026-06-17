@@ -1144,9 +1144,17 @@
           audio.play().then(() => {
             audioStarted = true;
           }).catch(() => {
-            // Autoplay blocked (page restore) — play on first interaction instead
-            birthdayView.addEventListener('click',      playAudio, { once: true });
-            birthdayView.addEventListener('touchstart', playAudio, { once: true });
+            // Autoplay blocked (page restore)
+            if (navigator.maxTouchPoints > 0) {
+              // Mobile: unlock on touchstart, play on first scroll
+              birthdayView.addEventListener('touchstart', () => {
+                audio.play().then(() => { audio.pause(); audio.currentTime = 0; }).catch(() => {});
+              }, { once: true });
+              birthdayView.addEventListener('scroll', playAudio, { once: true });
+            } else {
+              // Desktop: play on first click
+              birthdayView.addEventListener('click', playAudio, { once: true });
+            }
           });
         }, 2625);
       }

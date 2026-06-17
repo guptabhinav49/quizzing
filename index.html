@@ -409,9 +409,30 @@
       text-align: left;
     }
 
-    /* If the user wraps paragraphs in <p> tags inside BIRTHDAY_MESSAGE */
     .birthday-message p + p {
       margin-top: 1em;
+    }
+
+    .bday-photo {
+      display: block;
+      width: 100%;
+      max-width: 420px;
+      margin: 1.75rem auto;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(61,43,31,.18);
+      object-fit: cover;
+      aspect-ratio: 4/3;
+    }
+
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .scroll-reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .birthday-hearts {
@@ -419,6 +440,36 @@
       letter-spacing: 0.5rem;
       display: block;
       animation: fadeUp 0.6s 0.95s ease-out both, heartbeat 1.8s 1.6s ease-in-out infinite;
+    }
+
+    /* ── Volume hint ── */
+    @keyframes hintFade {
+      0%   { opacity: 0; transform: translateY(-6px); }
+      15%  { opacity: 1; transform: translateY(0); }
+      75%  { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    .volume-hint {
+      position: fixed;
+      top: 1.1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(61,43,31,.72);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 0.45rem 1rem;
+      border-radius: 99px;
+      white-space: nowrap;
+      z-index: 103;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .volume-hint.show {
+      animation: hintFade 3.5s ease forwards;
     }
 
     /* ── Setup panel ── */
@@ -751,9 +802,10 @@
   <!-- ══════════════ BIRTHDAY VIEW ══════════════ -->
   <div id="birthday-view" class="birthday-screen hidden">
     <canvas id="confetti-canvas"></canvas>
+    <div id="volume-hint" class="volume-hint" aria-hidden="true">🔊 Turn up the volume!</div>
     <div class="birthday-inner">
       <div class="birthday-content">
-        <span class="birthday-emoji">🎂</span>
+        <!-- <span class="birthday-emoji">🎂</span> -->
         <h1 class="birthday-title">Happy Birthday!</h1>
         <p class="birthday-name" id="birthday-name"></p>
         <div class="birthday-message" id="birthday-message"></div>
@@ -812,11 +864,14 @@
       </div>
       <ul class="rules-list">
         <li>You&rsquo;ll get <span id="q-count"></span> quiz-style questions, one at a time.</li>
+        <li>Each answer will have 2 words.</li>
         <li>These are a little elaborate because you&rsquo;re too smart for easy puzzles.</li>
-        <li>Use of Google/Wikipedia is expected 🤓. LLMs are a no-no 🏃!</li>
-        <li>Spelling counts — but capitalisation doesn&rsquo;t.</li>
+        <li>Spelling counts but capitalisation doesn&rsquo;t.</li>
         <li>The Next button unlocks once you&rsquo;ve got it right.</li>
         <li>Can you guess the connection between all the answers? 🤔</li>
+
+        <li>Use of Google/Wikipedia is expected 🤓. LLMs are a no-no!</li> 
+        <li>Try not to go beyond the AI Overview while searching Google 🏃!</li>
       </ul>
     </div>
   </div>
@@ -831,7 +886,25 @@
     //  BIRTHDAY MESSAGE — the paragraph(s) shown after "Happy Birthday!"
     //  Supports HTML: use <b>, <em>, <br>, or wrap in <p>…</p> tags.
     // ================================================================
-    const BIRTHDAY_MESSAGE = "hehe";
+    const BIRTHDAY_MESSAGE = `<p>I dream a lot. Most of the dreams don't realise, but isn’t that the reason we dream? Don’t we all dream about scenarios where everything works out well, the most improbable, borderline illogical thing, and spend our time daydreaming about it. It is very difficult to pull yourself out into reality.</p> <br>
+
+    <p>This was one of those dreams. Very far-fetched, very unlikely. IF she doesn’t take the insta DM badly, IF she agrees to go out with me, IF the dates go well, IF I don't come out as a boring nerd, IF she’s okay dating someone from Junta, IF she actually becomes my girlfriend, IF all of this happens within 6 months from now THEN I would make a MJ themed birthday present for her.</p>
+    <p>YESS, this was all a dream, I thought about it even before we started dating. It just popped up in my head when I realised your initials are MJ. I’m living the dream, and cannot imagine me being happier than this.</p><br>
+
+    <p>So yeah.. living a dream ain’t so bad. Love you loads MJ! Happy Birthday wohooo <3<3<3 </p>
+    `;
+
+    // ================================================================
+    //  BIRTHDAY IMAGES — shown between paragraphs on the birthday screen
+    //  Paths are relative to index.html
+    // ================================================================
+    const BIRTHDAY_IMAGES = [
+    //   'media/20260524_181912.jpg',
+      'media/20260524_195141.jpg',
+      'media/20260526_204908.jpg',
+      'media/20260528_155431.jpg',
+      'media/20260404_172455.jpg',
+    ];
 
     // ================================================================
     //  QUESTIONS ARRAY
@@ -841,7 +914,26 @@
     //      Open  index.html?setup  to generate hashes.
     // ================================================================
     const questions = [
-        { q: "sample", h: "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824" },
+      {
+        q: "Anu Malik won Best Music Director for movie <b>X</b> in the 50th Filmfare awards. Undoubtedly the movie gave us timeless classics. The director (<b>Y</b>) of this movie <b>X</b>, is also a prominent personality in Bollywood. <b>Y</b> started her career as a choreographer in the industry. In fact, she never danced until adulthood when she was heavily inspired by a <i>thriller</i> dance video of <b>Z</b>. Identify <b>Z</b>.",
+        h: "99d4ec41c9c6e8adbafb833279461194aa818c1dbf4227e9acf787fcfea7f549"
+      },
+      {
+        q: "The answer <b>X</b> to this puzzle is a euphemism for an administrable substance. The substance has medical, spiritual and recreational uses. It is also famously used in India as a customary addition to some intoxicating drinks. Interestingly, on a completely separate note, <b>X</b> is also a famous character in the Marvel Comics. ID <b>X</b>.",
+        h: "e3a62fcabda79e1b70db99ef77d0e0af36d27e3c48bce714fac085d5058d945a"
+      },
+      {
+        q: "Flying cars have always been fascinating fictional movie components. The world set in Movie <b>X</b>, released in the 90s, also uses the same trick to set up the dystopian world. <b>X</b> stars an Ukrainian actress <b>Y</b>, who is not only polyglot but also can be considered the female counterpart of Tom Cruise. Just like Tom Cruise, she&rsquo;s known for performing her stunts herself in many of her movies. ID the actress <b>Y</b>.",
+        h: "5ac6adbbf793ac5066d401f14b484efdeebc4993d4400ef49dbd4b5998429dc2"
+      },
+      {
+        q: "<b>X</b> is a popular grey-white big-eared animated character which many of us have seen growing up. <b>X</b> is a part of an ensemble of characters called <b>Y</b>. <b>Y</b> includes popular characters like Daffy Duck, Elmer Fudd and others. <b>Y</b> were part of a live-action animated sports comedy film, which starred a prolific basketball player <b>Z</b>. Now retired player <b>Z</b>, gives name to an extremely lucrative subsidiary under a top shoe brand, worn by millions. ID <b>Z</b>.",
+        h: "c304ce4e1db8c6c28df72044cf54801af22eda999408d65cb2af41aab7dd15c9"
+      },
+      {
+        q: "<b>X</b> is a puzzle-loving graduate from a prominent Indian university. Famously known for her bravery and never-giving up attitude, she&rsquo;s also said to be infinitely cute and huggable. Although she&rsquo;s a pokemon fanatic, to <b>Y</b>, she herself is the legendary pokemon. <b>Y</b> is said to be smitten by <b>X</b> and gets restless when he cannot see <b>X</b> for long time. ID <b>X</b>.",
+        h: "ad0eb94916983fe0fca08c6c18f8e7c6f7f1dc37e688dbceb8fa46c08a33efd2"
+      },
     ];
     // ================================================================
 
@@ -1008,11 +1100,55 @@
 
       function showBirthday() {
         saveState(currentIndex, true);
-        birthdayNameEl.textContent   = BIRTHDAY_NAME;
-        birthdayMessageEl.innerHTML  = BIRTHDAY_MESSAGE;
+        birthdayNameEl.textContent  = BIRTHDAY_NAME;
+
+        // Render message then interleave images between <p> elements
+        birthdayMessageEl.innerHTML = BIRTHDAY_MESSAGE;
+        const paras = Array.from(birthdayMessageEl.querySelectorAll('p'));
+        BIRTHDAY_IMAGES.forEach((src, i) => {
+          const anchor = paras[i];
+          if (!anchor) return;
+          const img = document.createElement('img');
+          img.src = src;
+          img.alt = '';
+          img.className = 'bday-photo scroll-reveal';
+          anchor.after(img);
+        });
+
+        // Fade photos in as they scroll into view
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add('revealed'); observer.unobserve(e.target); }
+          });
+        }, { threshold: 0.15 });
+        birthdayMessageEl.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
         quizView.classList.add('hidden');
         birthdayView.classList.remove('hidden');
         launchConfetti();
+
+        // Show hint toast, then start audio as it begins fading out (75% of 3.5s)
+        const hint = document.getElementById('volume-hint');
+        hint.classList.add('show');
+        hint.addEventListener('animationend', () => hint.classList.remove('show'), { once: true });
+
+        const audio = new Audio('media/hum-tere-pyar-mei-flute-version.mp3');
+        let audioStarted = false;
+        const playAudio = () => {
+          if (audioStarted) return;
+          audioStarted = true;
+          audio.play().catch(() => {});
+        };
+
+        setTimeout(() => {
+          audio.play().then(() => {
+            audioStarted = true;
+          }).catch(() => {
+            // Autoplay blocked (page restore) — play on first interaction instead
+            birthdayView.addEventListener('click',      playAudio, { once: true });
+            birthdayView.addEventListener('touchstart', playAudio, { once: true });
+          });
+        }, 2625);
       }
 
       nextBtn.addEventListener('click', advance);
